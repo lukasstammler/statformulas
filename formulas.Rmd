@@ -1,0 +1,456 @@
+---
+title: "Formeln und R-Funktionen"
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    number_sections: false
+    toc_float: true
+    theme: flatly
+    highlight: zenburn
+    fig_width: 5.0
+    fig_height: 3.5
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align="center")
+```
+
+# Kennzahlen
+
+## Umfang
+
+$n$ = Stichprobenumfang   
+$N$ = Umfang der Population  
+
+## Arithmetisches Mittel, Mittelwert
+
+$\bar{x}$ = Stichprobenmittelwert  
+$\mu$ = Populationsmittelwert
+
+$$\bar{x} = \sum_{i=1}^n \frac{x_i}{n}$$
+```{r mean, eval=FALSE}
+mean()
+```
+
+Beispiel:
+
+```{r mean-expl}
+x <- c(2, 3, 4, 4, 5, 6)
+mean(x)
+```
+## Median
+
+wenn $n$ gerade
+
+$$\tilde{x} = x_{\frac{n+1}{2}}$$
+
+wenn $n$ ungerade  
+
+$$\tilde{x} = \frac{1}{2}(x_{\frac{n}{2}} + {x_{\frac{n}{2}+1}})$$
+
+```{r median, eval = FALSE}
+median()
+```
+
+Beispiel:
+
+```{r median-expl}
+x <- c(2, 3, 4, 4, 5, 6, 10)
+median(x)
+```
+
+Varianz
+
+$s^2$ = Stichprobenvarianz  
+$\sigma^2$ = Varianz der Population
+
+$$s^2 = \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{n-1}$$
+
+$$\sigma^2 = \frac{\sum_{i=1}^n (x_i - \mu)^2}{n}$$
+
+```{r var, eval=FALSE}
+var()
+```
+
+Beispiel:
+
+```{r var-expl}
+x <- c(2, 3, 4, 4, 5, 6, 10)
+var(x)
+```
+
+
+## Standardabweichung  
+
+$s$ = Standardabweichung der Stichprobe  
+$\sigma$ = Standardabweichung der Population  
+
+$$s = \sqrt{s^2}$$
+
+$$\sigma = \sqrt{\sigma^2}$$
+
+```{r sd, eval=FALSE}
+sd()
+```
+
+Beispiel:
+
+```{r}
+x <- c(2, 3, 4, 4, 5, 6, 10)
+sd(x)
+```
+
+# Grafiken
+
+## Histogramm
+
+```{r hist, eval=FALSE}
+hist()
+```
+
+Beispiel:
+
+```{r hist-expl}
+x <- c(2, 3, 4, 4, 5, 6, 10, 9, 8, 7, 7, 7, 5, 4)
+hist(x)
+```
+
+## Boxplot
+
+```{r boxplot, eval=FALSE}
+boxplot()
+```
+
+Beispiel:
+
+```{r boxplot-expl}
+x <- c(2, 3, 4, 4, 5, 6, 10, 9, 8, 7, 7, 7, 5, 4)
+boxplot(x)
+```
+
+## Kreuztabelle, absolute Häufigkeiten
+
+```{r table, eval=FALSE}
+table()
+```
+
+Beispiel:
+
+```{r}
+x = c("a", "a", "b", "b", "b", "c")
+table(x)
+```
+
+## Kreuztabelle, relative Häufigkeiten
+
+```{r prop.table, eval=FALSE}
+prop.table()
+```
+
+Beispiel:
+
+```{r}
+x = c("a", "a", "b", "b", "b", "c")
+prop.table(table(x))
+```
+
+## Balkendiagramm
+
+```{r barplot, eval = FALSE}
+barplot()
+```
+
+Beispiel:
+
+```{r barplot-expl}
+x = c("a", "a", "b", "b", "b", "c")
+barplot(table(x))
+```
+
+# Normalverteilung
+
+$$X \sim N(\mu, \sigma)$$
+
+## 68-95-99.7-Regel
+
+* 68% in $\mu \pm 1\sigma$   
+* 95% in $\mu \pm 2\sigma$, genauer $\mu \pm 1.96\sigma$  
+* 99.7% in $\mu \pm 3\sigma$  
+
+## z-Wert
+
+$$z = \frac{x_i-\bar{x}}{s}$$
+
+* Der z-Wert einer Beobachtung $x_i$ gibt an, um wieviele Standardabweichungen die Beobachtung über oder unter dem Mittelwert liegt.   
+* Der z-Wert des Mittelwerts ist 0  
+* ungewöhnliche Beobachtungen haben einen z-Wert von $|z|>2$.  
+
+## Perzentilen in R berechnen   
+
+```{r percentiles, eval=FALSE}
+# Fläche links von x
+pnorm(x, mean, sd)  
+
+# Fläche rechts von x
+1 - pnorm(x, mean, sd)
+pnorm(x, mean, sd, lower.tail = FALSE) 
+
+# Wert auf einer bestimmten Perzentile
+qnorm(percentile, mean, sd) 
+```
+
+Beispiel:
+
+```{r perc-expl, eval=TRUE}
+x <- c(2, 3, 4, 4, 5, 6, 10, 9, 8, 7, 7, 7, 5, 4)
+mittelwert <- mean(x)
+stdabw <- sd(x)
+
+# Wahrscheinlichkeit für den Wert kleiner oder gleich 7
+pnorm(7, mittelwert, stdabw)
+
+# Wahrscheinlichkeit für den Wert gleich oder grösser 7
+1 - pnorm(7, mittelwert, stdabw)
+
+# Wert auf der 40%-Perzentile
+qnorm(.4, mittelwert, stdabw)
+```
+
+## QQ-Plot
+
+```{r qq, eval=FALSE}
+# Punkte in Streudiagramm darstellen
+qqnorm()
+
+# Linie in QQ-Plot einzeichnen
+qqline()
+```
+
+Beispiel:
+
+```{r}
+# simulation von 100 normalverteilten Werten, mean = 0, s = 1
+set.seed(1)
+x <- rnorm(100)
+
+## qq-plot erstellen
+qqnorm(x)
+
+## Linie in qq-plot einzeichnen
+qqline(x, col = "blue")
+```
+
+<center>
+![qq-plots Interpretation](./png/qq.png)
+</center>
+
+# Grundlagen der Inferenzstatstik
+
+## Zentraler Grenzwertsatz
+
+Die Verteilung von Stichprobenkennzahlen (z.B. Mittelwert) folgt annähernd einer Normalverteilung. Ihr Mittelwert liegt in der Nähe des Populationsmittelwertes $\mu$ mit einer Standardabweichung geteilt durch die Quadratwurzel des Stichprobenumfangs.
+
+$$\bar{x} \sim N(Mittelwert = \mu, SE = \frac{\sigma}{\sqrt{n}})$$
+
+Wenn $\sigma$ unbekannt ist (was eigentlich immer der Fall ist), wird die Standardabweichung $s$ der Stichprobe als Schätzer für $\sigma$ eingesetzt.
+
+$$SE = \frac{s}{\sqrt{n}}$$
+
+Bedingungen für die Gültigkeit des zentralen Grenzwertsatzes:  
+
+* Die Beobachtungseinheiten in der Stichprobe sind unabhängig voneinander (zufällige Auswahl, zufällige Zuordnung zu Gruppen).   
+* Faustregel: Stichprobenumfang $n>30$
+
+Beispiel für die Berechnung des Standardfehlers $SE$ in `R`
+
+```{r}
+# simulation von 100 normalverteilten Werten, mean = 0, s = 1
+set.seed(1234)
+x <- rnorm(100)
+
+# Stichprobenumfang von x ermitteln
+n <- length(x)
+
+# Standardabweichung von x berechnen
+s <- sd(x)
+
+# Berechnung von SE
+SE <- s/sqrt(n)
+
+# Output SE
+SE
+```
+
+## Konfidenzintervalle  
+
+Konfidenzintervalle (Vertrauensintervalle, $CI$) können auf jedem Konfidenzniveau berechnet werden. Um die Sache nicht allzu kompliziert zu machen, wird hier v.a. exemplarisch die Berechnung von 95%-Konfidenzinteravallen vorgestellt.  
+
+* Signifikanzniveau = $\alpha$ 
+* Konfidenzniveau = $1-\alpha$  
+
+$$CI^* = \bar{x} \pm z^* \times SE$$
+
+$$z^* = \vert \frac{(1-CI^*)}{2} \vert$$
+
+$$z^* \times SE = z^* \times \frac{s}{\sqrt{n}}$$
+
+$z^* \times SE$ wird auch als Fehlerbereich (engl. $margin of error, ME$) bezeichnet.
+
+Der Wert von $z^*$ ist abhängig vom Konfidenzniveau.   
+
+```{r z-values}
+# z für ein 95% CI
+CI <- .95
+z95 <- abs(qnorm((1 - CI)/2))
+z95
+
+# z für ein 90% CI
+CI <- .9
+z90 <- abs(qnorm((1 - CI)/2))
+z90
+
+# z für ein 99% CI
+CI <- .99
+z99 <- abs(qnorm((1 - CI)/2))
+z99
+```
+
+Beispiel für die Berechnung eines 95% Konfidenzintervalls
+
+```{r}
+m <- 95.6       # Stichprobenmittelwert
+s <- 15.8       # Standardabweichung der Stichprobe
+n <- 100        # Stichprobenumfang
+
+# gesucht ist das 95% Konfidenzintervall für den Populationsmittelwert  
+CI <- .95       # Konfidenzniveau 95%
+z <- abs(qnorm((1-CI)/2))
+ME <- z * CI    # Fehlerbereich berechnen
+
+# Obere und untere Grenze für 95%-Konfidenzintervall berechnen
+CI95 <- m + c(-1, 1) * ME
+CI95
+```
+
+## Zuverlässigkeit vs. Präzision  
+
+* Wenn wir das Konfidenzniveau erhöhen (Konfidenzintervall wird breiter, z.B. von 95% auf 99%) nimmt die Zuverlässigkeit, dass wir den wahren Populationsparameter im Intervall haben zu, allerdings auf Kosten der Präzision.   
+* Wie können wir Zuverlässigkeit und Präzision gleichzeitig verbessern? Antwort: Stichprobenumfang erhöhen.   
+
+Stichprobenumfang für einen bestimmten Fehlerbereich berechnen:
+
+$$ME = z^* \times \frac{s}{\sqrt{n}} \rightarrow n = (\frac{z^* \times s}{ME})^2$$
+
+Beispiel: Im Beispiel oben betrug unser ME = 1.862. Wir möchten den ME halbieren und bestimmen den benötigten Stichprobenumfang. (Kennzahlen wie oben)
+
+```{r}
+ME.alt <- 1.862
+ME.neu <- ME.alt/2
+
+# neues 95%-Konfidenzintervall berechnen
+CI95.neu <- m + c(-1, 1) * ME.neu
+CI95.neu
+
+# Stichprobenumfang für das neue 95%-CI berechnen
+n.neu <- ((z * s)/ME.neu)^2
+n.neu
+```
+
+## Hypothesentest für einen Mittelwert   
+
+**Hypothesentests werden immer für einen Popultionsparameter, z.B. $\mu$ durchgeführt und nicht für eine Stichprobe.**
+
+1. Formuliere die wissenschaftliche Hypothese  
+
+  * $H_0: \mu = Nullwert$   
+  * $H_A: \mu < oder > oder \neq Nullwert$   
+  
+2. Berechne den Punktschätzer $\bar{x}$ für $\mu$  
+3. Überprüfe die Testvoraussetzungen   
+
+  * Beobachtungseinheiten in der Stichprobe sind unabhängig.   
+  * Der Stichprobenumfang $n \geq 30$ oder grösser bei stark schiefer Verteilung.   
+  
+4. Skizziere die Stichprobenverteilung, zeichne deinen Verwerfungsbereich ein und berechne die Teststatistik.    
+
+$$z = \frac{\bar{x} - \mu}{SE}, ~~ SE = \frac{s}{\sqrt{x}}$$
+
+5. Berechne den $p$-Wert für z   
+6. Treffe eine Entscheidung und interpretiere das Ergebnis im Zusammenhang mit deiner Fragestellung:   
+
+  * $p \leq \alpha:$, verwerfe $H_0$; die Daten lieferen Evidenz für $H_A$.  
+  * $p \geq \alpha:$, verwerfe $H_0$ nicht, die Daten liefern keine Evidenz gegen $H_0$.  
+  
+### p-Werte berechnen   
+
+Definition: 
+
+$$p-Wert = P(beobachtete~oder~extremere~Teststatistik~ | ~H_0~ wahr)$$
+
+Der p-Wert quantifiziert die Evidenz gegen $H_0$. Ein kleiner $p$-Wert (üblicherweise $p \leq 0.05$) bedeutet, dass du ausreichend Evidenz dafür hast, $H_0$ zu Gunsten von $H_A$ zu verwerfen.   
+
+**Einseitiger Hypothesentest anhand von p-Werten**
+
+1. Fall
+
+$H_A: \mu > Nullwert$
+
+$$z = \frac{\bar{x}-Nullwert}{SE_{\bar{x}}}$$
+
+$p$-Wert in `R` berechnen:
+
+```{r p-value-g, eval=FALSE}
+p <- 1 - pnorm(z)
+```
+
+2. Fall
+
+$H_A: \mu < Nullwert$
+
+$$z = \frac{\bar{x}-Nullwert}{SE_{\bar{x}}}$$
+
+$p$-Wert in `R` berechnen:
+
+```{r p-value-l, eval=FALSE}
+p <- pnorm(z)
+```
+
+**Zweiseitiger Hypothesentest anhand von p-Werten**
+
+$H_A: \mu \neq Nullvalue$   
+
+$$z = \frac{\bar{x}-Nullwert}{SE_{\bar{x}}}$$
+
+$p$-Wert in `R` berechnen:
+
+```{r p-value-twos, eval=FALSE}
+p <- 2 * pnorm(abs(z), lower.tail = FALSE)
+```
+
+### Entscheidungsfehler
+
+* Fehler 1. Art: $H_0$ wird verworfen wenn $H_0$ wahr ist.   
+* Fehler 2. Art: $H_0$ wird nicht verworfen wenn $H_A$ wahr ist.   
+
+Bei einem Signifikanzniveau $\alpha = 0.05$ nehmen wir ein Risiko von 5% in Kauf, einen Fehler 1. Art zu begehen. 
+
+* $\alpha:$ Wahrscheinlichkeit, einen Fehler 1. Art zu begehen.  
+* $\beta:$ Wahrscheinlichkeit, einen Fehler 2. Art zu begehen.   
+* $1-\beta:$ Power (Trennschärfe) eines Tests; Wahrscheinlichkeit, für $H_A$ zu entscheiden, wenn $H_A$ wahr ist.
+
+### Hypothesentests mit Konfidenzintervallen  
+
+* Ein zweiseitiger Hypothesentest mit einem Signifikanzniveau $\alpha$ entspricht einem Konfidenzintervall mit dem Konfidenzniveau $1-\alpha$.  
+* Ein einseitiger Hypothesentest mit einem Signifikanzniveau $\alpha$ entspricht einem Vertrauensintervall mit einem Konfidenzniveau von $1-(2 \times \alpha)$.   
+* Enthält ein 95% Vertrauensintervall den Nullwert nicht, wird $H_0$ verworfen.  
+* Enthält ein 95% Vertrauensintervall den Nullwert, wird $H_0$ nicht verworfen.   
+
+# Inferenz für quantitative Daten  
+
+p.11
+
