@@ -1,16 +1,19 @@
 ---
-title: "Formeln und R-Funktionen"
+title: 'Grundkurs Statistik: Formeln und R-Funktionen'
 author: "Lukas Stammler"
 date: "`r Sys.Date()`"
-output: 
+output:
   html_document:
-    toc: true
-    number_sections: false
-    toc_float: true
+    toc: yes
+    number_sections: no
+    toc_float: yes
     theme: flatly
-    highlight: zenburn
-    fig_width: 5.0
+    highlight: default
+    fig_width: 5
     fig_height: 3.5
+    code_download: yes
+  pdf_document:
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -299,7 +302,7 @@ $$z^* = \vert \frac{(1-CI^*)}{2} \vert$$
 
 $$z^* \times SE = z^* \times \frac{s}{\sqrt{n}}$$
 
-$z^* \times SE$ wird auch als Fehlerbereich (engl. $margin of error, ME$) bezeichnet.
+$z^* \times SE$ wird auch als Fehlerbereich (engl. $margin~ of~ error,~ ME$) bezeichnet.
 
 Der Wert von $z^*$ ist abhängig vom Konfidenzniveau.   
 
@@ -339,8 +342,8 @@ CI95
 
 ## Zuverlässigkeit vs. Präzision  
 
-* Wenn wir das Konfidenzniveau erhöhen (Konfidenzintervall wird breiter, z.B. von 95% auf 99%) nimmt die Zuverlässigkeit, dass wir den wahren Populationsparameter im Intervall haben zu, allerdings auf Kosten der Präzision.   
-* Wie können wir Zuverlässigkeit und Präzision gleichzeitig verbessern? Antwort: Stichprobenumfang erhöhen.   
+Wenn wir das Konfidenzniveau erhöhen (Konfidenzintervall wird breiter, z.B. von 95% auf 99%) nimmt die Zuverlässigkeit, dass wir den wahren Populationsparameter im Intervall haben zu, allerdings auf Kosten der Präzision.   
+Wie können wir Zuverlässigkeit und Präzision gleichzeitig verbessern? Antwort: Stichprobenumfang erhöhen.   
 
 Stichprobenumfang für einen bestimmten Fehlerbereich berechnen:
 
@@ -368,23 +371,23 @@ n.neu
 1. Formuliere die wissenschaftliche Hypothese  
 
   * $H_0: \mu = Nullwert$   
-  * $H_A: \mu < oder > oder \neq Nullwert$   
+  * $H_A: \mu < oder > oder \neq Nullwert$  
+  * Es wird empfohlen $H_A:$ immer zweiseitig formulieren ausser in begründeten Ausnahmefällen.
   
 2. Berechne den Punktschätzer $\bar{x}$ für $\mu$  
 3. Überprüfe die Testvoraussetzungen   
 
   * Beobachtungseinheiten in der Stichprobe sind unabhängig.   
+  * Stichprobe stammt aus eine annähernd normalverteilten Population.   
   * Der Stichprobenumfang $n \geq 30$ oder grösser bei stark schiefer Verteilung.   
   
 4. Skizziere die Stichprobenverteilung, zeichne deinen Verwerfungsbereich ein und berechne die Teststatistik.    
 
 $$z = \frac{\bar{x} - \mu}{SE}, ~~ SE = \frac{s}{\sqrt{x}}$$
 
-5. Berechne den $p$-Wert für z   
-6. Treffe eine Entscheidung und interpretiere das Ergebnis im Zusammenhang mit deiner Fragestellung:   
+5. Liegt $z$ im Verwerfungsbereich wird $H_0$ zu Gunsten von $H_A$ zurückgewiesen.   
+6. Interpretiere dein Resultat im Zusammenhang mit der Fragestellung.  
 
-  * $p \leq \alpha:$, verwerfe $H_0$; die Daten lieferen Evidenz für $H_A$.  
-  * $p \geq \alpha:$, verwerfe $H_0$ nicht, die Daten liefern keine Evidenz gegen $H_0$.  
   
 ### p-Werte berechnen   
 
@@ -452,5 +455,761 @@ Bei einem Signifikanzniveau $\alpha = 0.05$ nehmen wir ein Risiko von 5% in Kauf
 
 # Inferenz für quantitative Daten  
 
-p.11
+## Hypothesentests für gepaarte Mittelwerte   
+
+* Gepaarte (auch verbundene) Daten:    
+
+  * Gleiche Beobachtungseinheiten: Vorher-Nachher-Messungen, Messwiederholungen  
+  * Unterschiedlieche Beobachtungseinheiten (jedoch abhängig): Zwillingsstudien, Partner   
+
+* Parameter: $\mu_{\Delta}$ = Mittelwert der paarweisen Differenzen in der Population      
+* Punktschätzer: $\bar{x}_{\Delta}$ = Mittelwert der paarweisen Differenzen in der Stichprobe   
+* Teststatistik: $z$-Wert
+* Hypothesen:   
+
+  * $H_0: \mu_{\Delta} = Nullwert$   
+  * $H_A: \mu_{\Delta} \neq Nullwert$ (zweiseitige $H_A$)  
+  
+### Vorgehen
+
+1. Wissenschaftliche Hypothesen formulieren   
+2. Punktschätzer berechnen   
+3. Annahmen prüfen   
+  
+  * Unabhängigkeit der Beobachtungseinheiten  
+  * Paarweise Differenzen sind annähernd normalverteilt.   
+  * Stichprobenumfang $n \geq 12$ oder grösser bei stark schiefen Verteilungen  
+4. Stichprobenverteilung skizzieren, Verwerfungsbereich einzeichnen und Teststatistik berechnen     
+  
+  $$z = \frac{\bar{x}_{\Delta} - \mu_{\Delta}}{SE_{\bar{x}_{\Delta}}}$$
+
+5. Liegt $z$ im Verwerfungsbereich wird $H_0$ zu Gunsten von $H_A$ zurückgewiesen.  
+6. Resultat im Zusammenhang mit der Fragestellung interpretieren.  
+
+### Konfidenzintervall für gepaarte Daten    
+
+$$CI^* = \bar{x}_{\Delta} \pm z* \times SE_{\Delta}$$
+  
+  $$CI^* = \bar{x}_{\Delta} \pm z^* \times \frac{s_{\Delta}}{n}$$
+
+## Hypothesentest für unabhängige Mittelwerte   
+
+* unabhängige Daten:   
+
+  * Unterschiedliche Beobachtungseinheiten, z.B. Vergleich von zwei Gruppen
+  
+* Parameter: $\mu_1 - \mu_2$, z.B. Differenz der Mittelwerte von zwei Populationen  
+* Punktschätzer: $\bar{x}_1 - \bar{x}_2$ z.B. Differenz der Mittelwerte von zwei Stichproben    
+* Teststatistik: $z$-Wert
+* Hypothesen:   
+
+  * $H_0: \mu_1 = \mu_2$ bzw. $H_0: \mu_1 - \mu_2 = 0$   
+  * $H_A: \mu_1 \neq \mu_2$ bzw. $H_A: \mu_1 - \mu_2 \neq 0$ (zweiseitige $H_A$) 
+  
+### Vorgehen   
+
+1. Wissenschaftliche Hypothese formulieren     
+2. Punktschätzer berechnen    
+3. Annahmen prüfen   
+  
+  * Unabhängigkeit der Beobachtungseinheiten innerhalb und zwischen den Gruppen   
+  * Stichprobe stammt aus eine annähernd normalverteilten Population.   
+  * Stichprobenumfang $n_1 \geq 30$ und $n_2 \geq 30$ oder grösser bei stark schiefen Verteilungen   
+  
+4. Stichprobenverteilung skizzieren, Verwerfungsbereich einzeichnen und Teststatistik berechnen    
+
+$$z = \frac{(\bar{x}_1 - \bar{x}_2)-(\mu_1 - \mu_2)}{SE_{\bar{x}_1 - \bar{x}_2}}$$
+
+$$SE_{\bar{x}_1 - \bar{x}_2} = \sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}$$
+
+5. Liegt $z$ im Verwerfungsbereich wird $H_0$ zu Gunsten von $H_A$ zurückgewiesen.  
+6. Resultat im Zusammenhang mit der Fragestellung interpretieren.  
+
+### Konfidenzintervall für unabhängige Daten  
+
+$$CI^* = (\bar{x}_1 - \bar{x}_2) \pm z^* \times SE_{\bar{x}_1 - \bar{x}_2}$$
+
+# T-Verteilung und t-Tests   
+
+Die T-Verteilung   
+
+* kann als Variante der Normalverteilung aufgefasst werden.  
+* hat immer den Mittelwert 0.  
+* hat eine Standardabweichung, die vom Stichprobenumfang $n$ abhängig ist.   
+* Wird nur durch einen einzigen Parameter, die Anzahl Freiheitsgrade $df$ (engl. degrees of freedom), definiert.  
+* Die T-Verteilung wird mit wachsendem $n$ schmaler und geht für $n \rightarrow \infty$ in die Normalverteilung über.   
+
+$$df = n-1$$
+$$t \sim T(df)$$
+
+Die T-verteilung wird verwendet, wenn    
+
+* der Stichprobenumfang klein ist ($n \leq 30$)    
+* die Standardabweichung $\sigma$ der Population unbekannt ist und mit Hilfe der Stichprobenstandardabweichung $s$ geschätzt werden muss. 
+* also eigentlich immer; die Software rechnet standardmässig mit der T-Verteilung.  
+* Die Teststatistik von T-Tests sind $t$-Werte. $t$-Werte werden gleich interpretiert wie $z$-Werte.  
+
+## Inferenz für einen Mittelwert
+
+Ziel: Vergleich eines Mittelwerts mit einem Vergleichswert (= Nullwert)
+
+Hypothesen:  
+
+* $H_0: \mu = Nullwert$   
+* $H_A: \mu \neq Nullwert$ (zweiseitig)  
+
+
+### Konfidenzintervall
+
+$$CI^* = \bar{x} \pm t_{df}^* \times SE_{\bar{x}}$$
+
+$$SE_{\bar{x}} = \frac{s}{\sqrt{n}}, ~~ df = n-1$$
+
+Quantilen für den kritischen t-Wert (Grenzen des Verwerfungsbereichs) und für die Konstruktion von Konfidenzintervallen mit `R`berechnen:
+
+```{r qt, eval=FALSE, echo=TRUE}
+# für Signifikanzniveau 0.05, 95% CI
+t <- qt(.025, df = n - 1)  
+
+# für Signifikanzniveau 0.1, 90% CI
+t <- qt(0.05, df = n - 1)
+
+# für Signifikanzniveau 0.01, 99% CI
+t <- qt(0.005, df = n - 1)
+```
+
+Die `R`-Funktion `qt()` gibt die untere Grenze an. Da die T-Verteilung symmetrisch ist, entspricht die obere Grenze dem Absolutwert der unteren Grenze.
+
+Beispiel zur Berechnung des Konfidenzintervalls in `R` 
+
+```{r, echo=TRUE}
+# Kennzahlen einer Stichprobe
+n <- 25
+m <- 15
+s <- 3
+
+
+ci_level <- .95                # Konfidenzniveau
+SE <- s/sqrt(n)                # Standardfehler   
+t_df <- qt(.025, df = 25 - 1)  # kritischer t-Wert
+
+CI <- m + c(-1, 1) * abs(t_df) * SE
+CI
+```
+
+### Einstichproben-t-Test
+
+$$t = \frac{\mu-Nullwert}{SE}$$
+
+Beispiel: Vergleich des Mittelwerts einer Stichprobe mit dem Nullwert in einer Population. Der Nullwert sei $Nullwert = 13$
+
+Hypothesen:  
+
+* $H_0: \mu = 13$   
+* $H_A: \mu \neq 13$ (zweiseitig)  
+
+```{r einsp-t-test, echo=TRUE}
+# Kennzahlen unserer Stichprobe und Nullwert
+n <- 25
+m <- 15
+s <- 3
+nullwert <- 13
+
+SE <- s/sqrt(n)                # Standardfehler   
+t <- (m - nullwert)/SE         # Teststatistik 
+
+# p-Wert für zweisseitige Hypothese berechnen
+p <- 2 * pt(abs(t), df = n - 1, lower.tail = FALSE)
+
+# output von t und p
+paste("t =", t, ", p =", p)
+```
+
+Einfacher geht es mit der Funktion `t.test()`
+
+```{r t.test, echo=TRUE}
+# Daten simulieren (muss man nicht verstehen)
+rnorm2 <- function(n, mean, sd) { mean + sd * scale(rnorm(n)) }
+x <- rnorm2(n = 25, mean =15, sd = 3)
+
+# t-Test in R
+t.test(x, # Stichprobendaten mit m = 15, s = 3, n = 25
+       mu = 13, # Nullwert
+       alternative = "two.sided") # zweiseitiger Test
+```
+
+Der Einstichproben-t-Test eignet sich auch als Test für gepaarte Daten mit der Prüfgrösse $mu_{\Delta}$.
+
+## Inferenz für zwei Mittelwerte
+
+Ziel: Vergleich von zwei Mittelwerten aus zwei Stichproben
+
+Hypothesen:  
+
+* $H_0: \mu_1 = \mu_2$   
+* $H_A: \mu_1 \neq \mu_2$ (zweiseitig)  
+
+### Konfidenzintervall
+
+$$CI^* = (\bar{x}_1 - \bar{x}_2) \pm t_{df}^* \times SE_{\bar{x}_1 - \bar{x}_2}$$ 
+
+$$SE_{\bar{x}_1 - \bar{x}_2} = \sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}$$
+
+$$df = n_1 + n_2 - 2$$
+
+Die Formeln für die Berechnung von $SE$ und $df$ sind etwas vereinfacht; genaue Formeln findet man in Statistiklehrbüchern.   
+
+### Zweistichproben-t-Test  
+
+$$t = \frac{(\bar{x}_1 - \bar{x}_2)-(\mu_1 - \mu_2)}{SE_{\bar{x}_1 - \bar{x}_2}}$$
+
+```{r zweisp-t-test, echo=TRUE}
+# Kennzahlen unserer Stichprobe und Nullwert
+n1 <- 25
+m1 <- 15
+s1 <- 3
+n2 <- 20
+m2 <- 18
+s2 <- 4
+
+# Standardfehler 
+SE <- sqrt((s1^2 / n1) + (s2^2/n2))
+
+# Teststatistik  
+t <- (m1 - m2)/SE     
+
+# Freiheitsgrade n2 - 1 ist kleiner als n1 - 1
+df <- n1 + n2 - 2
+
+# p-Wert für zweisseitige Hypothese berechnen
+p <- 2 * pt(abs(t), df, lower.tail = FALSE)
+
+# output von t und p
+paste("t =", t, ", p =", p)
+```
+
+Einfacher geht es mit der Funktion `t.test()`
+
+```{r t.test2, echo=TRUE}
+# Daten simulieren (muss man nicht verstehen)
+rnorm2 <- function(n, mean, sd) { mean + sd * scale(rnorm(n)) }
+x1 <- rnorm2(n = 25, mean =15, sd = 3)
+x2 <- rnorm2(n = 20, mean =18, sd = 4)
+
+# t-Test in R
+t.test(x = x1, # Gruppe 1
+       y = x2, # Gruppe 2
+       paired = FALSE, 
+       alternative = "two.sided")# zweiseitiger Test
+```
+
+# Nichtparametrische Tests
+
+Nichtparametrische Tests kommen zur Anwendung, wenn die Annahme der Normalverteilung fraglich ist.
+
+## Wilcoxon-Vorzeichenrangtest   
+
+Vergleicht einen Median mit einem vorgegebenen Referenzmedian.
+Annahmen:  
+
+* quantitative oder ordinal skalierte Daten   
+* unabhängige Beobachtungseinheiten   
+* Daten sind annähernd symmetrisch um den Median verteilt   
+  
+```{r, echo=TRUE, eval=FALSE}
+wilcox.test(x, mu = Referenzwert, alternative = "two.sided")
+```
+
+Beispiel:  
+
+```{r, echo=TRUE, warning=FALSE}
+# Daten generieren
+X <- c(3, 3, 4, 5, 6, 7, 7, 8, 1, 2)
+nullwert <- 6.5
+
+# Wilcoxon-Vorzeichenrangtest
+wilcox.test(x = X, mu = nullwert, alternative = "two.sided")
+```
+
+## Mann-Whitney-U-Test 
+
+Wird auch *Wilcoxon Rangsummen-Test* genannt.   
+
+Testet nicht ganz dasselbe wie der t-Test   
+
+* $H_0: P(X > Y) = P(Y > X)$, m.a.W: Es besteht eine 50%-Wahrscheinlichkeit dafür, dass ein zufällig gezogener Wert aus $X$ grösser ist als ein zufällig gezogener Mittelwert aus $Y$ (und umgekehrt)  
+*  $H_0: P(X > Y) \neq P(Y > X)$, m.a.W: Die Wahrscheinlichkeit ist nicht 50%, dass ein zufällig gezogener Wert aus $X$ grösser ist als ein zufällig gezogener Mittelwert aus $Y$ (und umgekehrt)  
+  
+Annahmen  
+
+* quantiative oder ordinal skalierte Daten   
+* unabhängige Beobachtungen  
+  
+```{r, echo=TRUE, eval=FALSE}
+wilcox.test(x, y, alternative = "two.sided", paired = FALSE)
+```
+
+Beispiel:
+
+```{r, echo=TRUE, warning=FALSE}
+# Daten generieren
+X <- c(3, 3, 4, 5, 6, 7, 7, 8, 1, 2)
+Y <- c(2, 3, 2, 5, 6, 2, 3, 8, 1, 2)
+
+# Mann-Whitney-U-Test
+wilcox.test(x = X, y = Y, alternative = "two.sided", paired = FALSE)
+```
+
+# Inferenz für qualitative Daten
+
+## Chi-Quadrat-Test
+
+auch *Chi-Quadrat-Anpassungstest* oder *Chi-Quadrat-Unabhängigkeitstest*   
+Untersucht, ob eine Zusammenhang zwischen zwei nominal oder ordinal skalierten Variablen besteht.
+Hypothesen:   
+
+* $H_0:$ Die Zeilen- und Spaltenvariablen sind voneineinander unabhängig.  
+* $H_A:$ Die Zeilen- und Spaltenvariablen sind hängen voneinander ab.   
+  
+Für jede Zelle der Tabelle muss der erwartete Wert $E$ unter der Nullhypothese berechnet werden.    
+
+$$E = \frac{Spaltentotal~\times~Zeilentotal}{Gesamttotal}$$
+
+$\chi^2$-Teststatistik 
+
+$$\chi^2 = \sum_{i=1}^k \frac{(O-E)^2}{E}$$
+
+* $O:$ beobachtete absolute Häufigkeiten   
+* $E:$ erwartete absolute Häufigkeiten   
+* $k:$ Anzahl Zellen   
+
+
+Die $\chi^2$-Verteilung hat nur einen Paramter: $df$   
+
+$$df = (R-1) \times (C-1)$$  
+
+* $R:$ Anzahl Zeilen   
+* $C:$ Anzahl Spalten   
+
+**Merke:** Der $\chi^2$-Test darf nur durchgeführt werden, wenn die erwartete Häufigkeit in jeder Zelle mindestens 5 beträgt. Andernfalls *Fisher's exakten Test* durchführen. 
+
+Der $\chi^2$-Test kann in `R` einfach mit der Funktion `chisq.test()` durchgeführt werden.   
+
+Der kritische Wert für $\chi^2$ kann in einer Verteilungstabelle abgelesen werden. Bei einer Vierfeldertafel (2 Zeilen und 2 Spalten) ist der Zusammenhang zwischen der Zeilen- und der Kolonnenvariable statistisch signifikant auf dem Niveau von 5% wenn $\chi^2$ grösser als $3.84~ (=1.96^2)$ ist.  
+
+Funktion in `R`
+
+```{r, echo=TRUE, eval=FALSE}
+chisq.test()
+```
+
+
+Beispiel: Untersucht wurde bei 100 Schüler:innen, ob sie Tictoc verwenden.
+
+```{r}
+# Beispielaten generieren
+tictoc_m <- c(rep("ja", 23), rep("nein", 29))
+tictoc_w <- c(rep("ja", 38), rep("nein", 10))
+geschlecht <- c(rep("m", length(tictoc_m)), rep("w", length(tictoc_w)))
+tictoc <- data.frame(Geschlecht = geschlecht,
+                     tictoc = c(tictoc_m, tictoc_w))
+
+# Chi-Quadrat-Test, Ergebnis in chisq speichern
+chisq <- chisq.test(table(tictoc))
+
+# Testergebnis anzeigen
+chisq
+
+# Beobachtete Werte anzeigen
+chisq$observed
+
+# erwartete Werte anzeigen
+chisq$expected
+```
+
+# Korrelation  
+
+Beschreibt die Stärke eines linearen Zusammenhangs zwischen zwei Variablen.  
+Zwei Korrelationskoeffizienten:  
+
+* **Korrelationskoeffizient nach Pearson $r$**  
+  * ist empfindlich gegenüber Ausreissern
+* **Rangkorrelationskoeffizient nach Spearman $r_s$**
+  * ist robust gegenüber Ausreissern    
+  * misst den monotonen Zusammenhang zwischen zwei Variablen   
+  
+Interpretation Korrelationskoeffizienten   
+
+* Wertebereich: $[-1, ~1]$, $0$ (kein Zusammenhang) $\pm1$ (perfekter Zusammenhang)   
+* Das Vorzeichen gibt die Richtung des Zusammenhangs an: - (Minus) bedeutet negativer Zusammenhang, + (Plus) bedeutet postitiver Zusammenhang.  
+  
+```{r, eval=FALSE, echo=TRUE}
+# Korrelationskoeffizient nach Pearson
+cor(x, y)
+
+# Rangkorrelationskoeffizient nach Spearman
+cor(x, y, method = "spearman")
+```
+
+Hypothesentest für Korrelationskoeffizienten  
+
+* $H_0: \rho = 0$, es besteht kein linearer Zusammenhang zwischen zwei Variablen.  
+* $H_A: \rho \neq 0$, es besteht ein linearer Zusammenhang zwischen zwei Variablen.   
+
+```{r, eval=FALSE, echo=TRUE}
+# Korrelationskoeffizient nach Pearson
+cor.test(x, y)
+
+# Rangkorrelationskoeffizient nach Spearman
+cor.test
+```
+
+
+# Einfache lineare Regression   
+
+Quantifiziert den Zusammenhang zwischen zwei Variablen.   
+Unterscheide: **abhängige Variable $y$** und **unabhängige Variable $x$, Prädiktor**    
+
+## Lineares Modell  
+
+$$\hat{y} = \beta_0 + \beta_1 x + \epsilon$$  
+
+bzw. mit Stichprobendaten  
+
+$$\hat{y} = b_0 + b_1x + e$$
+
+* $\hat{y}:$ geschätzte abhängige Variable   
+* $b_0:$ Achsenabschnitt (x = 0), *intercept*  
+* $b_1:$ Steigung der Regressionsgeraden, *slope*   
+* $x:$ Prädiktor    
+* $e:$ Fehler, *Residuen*   
+
+$$e_i = y_i - \hat{y}_i$$
+
+Steigung der Regressionsgeraden $b_1$  
+
+* Wenn $x$ quantitativ ist: Wenn $x$ um eine Einheit erhöht wird, erwarten wir, dass $y$ um $|b_1|$ Einheiten zunimmt bzw. abnimmt.   
+* Wenn $x$ nominal ist: Der Wert von $y$ nimmt um $|b_1|$ Einheiten gegenüber dem Referenzlevel zu bzw. ab.  
+  
+$$b_1 = \frac{s_y}{s_y} r$$
+
+* $s_y:$ Standardabweichung von y   
+* $s_y:$ Standardabweichung von x   
+* $r:$ Korrelationskoeffizient nach Pearson   
+
+Achsenabschnitt $b_0$   
+
+* Wenn $x$ quantitativ ist: Wenn $x = 0$ ist $y$ im Durchschnitt gleich $b_0$   
+* Wenn $x$ nominal ist: Der durchschnittliche Wert von $y$ für ein bestimmtes Level von $x$ ist gleich $b_0$. 
+  
+$$b_0 = \bar{y} - b_1 \bar{x}$$
+
+* $\bar{y}:$ Mittelwert von $y$   
+* $\bar{x}:$ Mittelwert von $x$
+  
+## Bedingungen für das lineare Regressionsmodell   
+
+1. Linearität  
+
+* Es besteht eine lineare Beziehung zwischen $y$ und $x$.    
+* Wird anhand von einem Streudiagramm überprüft.   
+
+2. Normalverteilung der Residuen      
+
+* Die Residuen sind annähernd normalverteilt, mit einem Mittelwert um 0.  
+* Wird anhand von einem QQ-Plot für die Residuen überprüft.  
+
+3. Konstante Variabilität (Homoskedastizität)  
+
+* Die Streuung der Punkte um die Regressionsgerade sollte annähernd konstant sein.   
+* Das bedeutet, dass die Streuung der Residuen um den Mittelwert 0 annähernd konstant ist.   
+* Wird an einem Streudiagramm für die Residuen geprüft.   
+
+```{r, echo=TRUE}
+# Beispieldaten generieren  
+set.seed(1)
+b0 <- 2
+b1 <- .5
+x <- runif(10) 
+error <- rnorm(10, 0, .2)
+y <- b0 + b1 * x + error
+daten <- data.frame(x = x, y = y)
+
+# lineares modell berechnen
+model <- lm(y ~ x, data = daten)
+
+# Zusammenfassung des Modells anzeigen
+summary(model)
+
+# Diagnostische Plots anzeigen
+plot(model, which = 1:2)
+```
+
+## Bestimmtheitsmass $R^2$   
+
+Für die einfache lineare Regression:
+
+$$R^2=r^2$$
+  
+* $r:$ Korrelationskoeffizient nach Pearson  
+* Ist ein Mass für die Güte eines linearen Modells   
+* sagt uns, wieviel Prozent der Streuung in $y$ durch $x$ erklärt werden.   
+* Die nicht durch $R^2$ erklärbare Streuung wird durch Faktoren erklärt, die nicht im Modell eingeschlossen sind.   
+* Wertebereich: [0, 1], 0 = 0%, 1 = 100%  
+* Interpretation: $R^2%$ der Variabilität von $y$ wird durch $x$ erklärt.  
+
+# R-Funktionen 
+
+Zusammenstellung einiger häufig verwendeter `R`-Funktionen.   
+
+Wer etwas mehr Details sucht ist hier gut aufgehoben:
+
+* [Einführung in R](https://methodenlehre.github.io/einfuehrung-in-R/index.html)  
+* [Base R - Cheat Sheet](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)
+
+## Hilfe erhalten
+
+Hilfe zu einer bestimmten Funktion (in `RStudio` im Register Help)
+
+```{r, eval=FALSE}
+?mean
+```
+
+Struktur eines Objekts anzeigen (in `RStudio` im Register Environment)
+
+```{r, eval=FALSE}
+str(objectname)
+```
+
+## Libraries verwenden
+
+Eine Library herunterladen und installieren
+
+```{r, eval=FALSE}
+install.packages("libraryname")
+```
+
+Eine Library laden
+
+```{r, eval=FALSE}
+library(libraryname)
+```
+
+## Arbeitsverzeichnis
+
+Arbeitsverzeichnis anzeigen  
+
+```{r, eval=FALSE}
+getwd()
+```
+
+Arbeitsverzeichnis definieren 
+
+```{r, eval=FALSE}
+setwd("C://pfad")
+```
+
+## Vektoren (Variablen)
+
+### Vektoren erzeugen
+
+```{r, eval=TRUE}
+# Werte einem Vektor zuweisen
+x <- 2
+x
+
+# Elemente zu einem Vektor verbinden  
+x <- c(2, 4, 6)
+x
+
+# Eine ganzzahlige Sequenz erzeugen
+x <- 2:6
+x
+
+# Eine komplexe Sequenz erzeugen
+x <- seq(2, 3, by = .5)
+x
+```
+
+### Vektorfunktionen 
+
+```{r}
+# Beispielvariable erzeugen für Demo
+x <- c(3, 2, 1, 2, 2, 1, 3, 4)  
+
+# Variable sortieren
+sort(x)
+
+# Werte zählen und in Tabelle ausgeben
+table(x)
+
+# Länge einer Variable bestimmen
+length(x)
+```
+
+### Vektorelemente auswählen
+
+```{r}
+# das 4. Element
+x[4]
+
+# alle Elemente ausser dem 4. Element
+x[-4]
+
+# Elemente 2 bis 4
+x[2:4]
+
+# Elemente die gleich 3 sind
+x[x == 3] 
+
+# Alle Elemente die kleiner als 3 sind  
+x[x < 3]
+```
+
+## Datentypen
+
+`R` kennt 4 Datentypen   
+
+```{r}
+# numeric (quantitativ)
+x <- c(1, 0, 1)
+str(x)
+
+# chraracter (string)
+x <- c("Anna", "Felix", "Lena")
+str(x)
+
+# factor (nominal), Verwendung als Gruppierungsvariable
+x <- c("con", "exp", "exp")  
+geschlecht <- factor(x,  levels = c("con", "exp"))
+str(geschlecht)
+
+# logical - TRUE, FALSE
+x <- c(TRUE, FALSE, FALSE, TRUE)
+x
+
+# Beispiel für die Verwendung von logischen Variablen
+x <- 1:10
+x
+x > 5
+x[x > 5]
+```
+
+## Logische Operatoren
+
+```{r, eval=FALSE}
+# a ist gleich b
+a == b
+
+# a ist nicht gleich b
+a != b
+
+# a ist grösser als b
+a > b
+
+# a ist kleiner als b
+a < b
+
+# a ist grösser gleich b
+a >= b
+
+# a ist kleiner gleich b
+a <= B
+
+# fehlende Wert in a
+is.na(a)
+```
+
+## Mathematische Funktionen   
+
+```{r}
+# Addieren
+1 + 2
+
+# Subtrahieren
+2 - 1
+
+# Multiplizieren
+2 * 3
+
+# Dividieren
+6 / 3
+
+# Quadrieren
+3^2
+
+# Quadratwurzel ziehen
+sqrt(9)
+
+# Absolutwert
+abs(-2)
+
+# Beispielvariable erzeugen für Demo
+x <- c(3, 2, 1, 2, 2, 1, 3, 4)  
+
+# Summe berechnen
+sum(x)
+
+# Maximum finden
+max(x)
+
+# Minimum finden
+min(x)
+
+# Wert auf 3 Stellen runden
+Wert <- 3.1234567
+round(Wert, 3)
+
+# Mittelwert von x
+mean(x)
+
+# Median von x
+median(x)
+
+# Varianz von x
+var(x)
+
+# Standardabweichung von x
+sd(x)
+
+# Spannweite, Variationsbreite (gibt min und max)
+range(x)
+
+# Interquartilsabstand
+IQR(x)
+```
+
+## Datensätze 
+
+In einem Datensatz haben alle Variablen die gleiche Länge!
+
+```{r}
+# Einen Datensatz erstellen
+df <- data.frame(
+  variable1 = 1:3,
+  variable2 = c("A", "B", "C")
+)
+df
+
+# Gesamten Datensatz anzeigen
+View(df)
+
+# Erste 6 Zeilen eines Datensatzes anzeigen
+head(df)
+
+# Anzahl Zeilen und Spalten anzeigen
+dim(df)
+
+# Spalte des Datensatzes anzeigen
+df[, 1]  
+
+# Zeile des Datensatzes anzeigen
+df[2, ]
+
+# Bestimmte Zelle des Datensatzes anzeigen
+df[2, 2]
+
+# Variable des Datensatzes
+df$variable1
+```
 
