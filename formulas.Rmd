@@ -834,6 +834,13 @@ Zwei Korrelationskoeffizienten:
 
 * **Korrelationskoeffizient nach Pearson $r$**  
   * ist empfindlich gegenüber Ausreissern
+  
+$$r = \frac{s_{xy}}{s_x \times s_y}$$
+
+$s_{xy}$ bezeichnet die *Covarianz* der beiden Variablen $X$ und $Y$:
+
+$$s_{xy} = \frac{1}{n-1} \sum_{i=1}^n (x_i-\bar{x})(y_i-\bar{y})$$
+  
 * **Rangkorrelationskoeffizient nach Spearman $r_s$**
   * ist robust gegenüber Ausreissern    
   * misst den monotonen Zusammenhang zwischen zwei Variablen   
@@ -842,6 +849,12 @@ Interpretation Korrelationskoeffizienten
 
 * Wertebereich: $[-1, ~1]$, $0$ (kein Zusammenhang) $\pm1$ (perfekter Zusammenhang)   
 * Das Vorzeichen gibt die Richtung des Zusammenhangs an: - (Minus) bedeutet negativer Zusammenhang, + (Plus) bedeutet postitiver Zusammenhang.  
+* Faustregel zur Interpretation:  
+  * -0.8 bis -1: starker negativer Zusammenhang   
+  * -0.8 bis -0.5: mittlerer negativer Zusammenhang  
+  * -0.5 bis 0.5: schwacher positiver Zusammenhang   
+  * 0.5 bis 0.8: mittlerer Zusammenhang   
+  * 0.8 bis 1: starker Zusammenhang  
   
 ```{r, eval=FALSE, echo=TRUE}
 # Korrelationskoeffizient nach Pearson
@@ -953,7 +966,10 @@ $$R^2=r^2$$
   
 * $r:$ Korrelationskoeffizient nach Pearson  
 * Ist ein Mass für die Güte eines linearen Modells   
-* sagt uns, wieviel Prozent der Streuung in $y$ durch $x$ erklärt werden.   
+* sagt uns, wieviel Prozent der Streuung in $y$ durch $x$ erklärt werden.  
+
+$$R^2 = \frac{durch~ x ~erklärte~ Streuung~ von~ y}{Gesamtstreuung~ von~ y}$$
+
 * Die nicht durch $R^2$ erklärbare Streuung wird durch Faktoren erklärt, die nicht im Modell eingeschlossen sind.   
 * Wertebereich: [0, 1], 0 = 0%, 1 = 100%  
 * Interpretation: $R^2%$ der Variabilität von $y$ wird durch $x$ erklärt.  
