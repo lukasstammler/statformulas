@@ -3,6 +3,8 @@ title: 'Grundkurs Statistik: Formeln und R-Funktionen'
 author: "Lukas Stammler"
 date: "`r Sys.Date()`"
 output:
+  pdf_document:
+    toc: yes
   html_document:
     toc: yes
     number_sections: no
@@ -12,8 +14,6 @@ output:
     fig_width: 5
     fig_height: 3.5
     code_download: yes
-  pdf_document:
-    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -895,7 +895,7 @@ wilcox.test(x = X, y = Y, alternative = "two.sided", paired = FALSE)
 ## Hypothesen   
 
 * $H_0: \mu_1 = \mu_2 ... = \mu_n$   
-* $H_A: Die ~Mittelwerte ~sind ~nicht ~alle ~gleich$$ 
+* $H_A: Die ~Mittelwerte ~sind ~nicht ~alle ~gleich$ 
 
 ## Quadratsummenzerlegung  
 
