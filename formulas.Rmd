@@ -175,6 +175,46 @@ x = c("a", "a", "b", "b", "b", "c")
 barplot(table(x))
 ```
 
+<br/>
+<br/>
+<br/>
+
+# Wahrscheinlichkeiten  
+
+
+## Wahrscheinlichkeit 
+
+* Unter Wahrscheinlichkeit versteht man die Chance, dass bei einem Zufallsexperiment ein bestimmtes Ereignis auftritt.   
+* Wahrscheinlichkeiten können nur Werte zwischen 0 (unmögliches Ereignis) und 1 (sicheres Ereignis) zugeordnet werden.   
+* Nach *Laplace* ist die Wahrscheinlichkeit für ein günstiges Ereignis $p(A)$:
+
+$$p(A) = \frac{n_A}{N_{gesamt}} = \frac{Anzahl~der~günstigen~Ereignisse}{Anzahl~der~möglichen~Ereignisse}$$
+
+## Ereignis und Gegenereignis  
+
+$$p(A) + p(Nicht~A) = 1$$
+
+## Bedingte Wahrscheinlichkeiten  
+
+* Die bedingte Wahrscheinlichkeit $p(A|B)$ quantifiziert die Wahrscheinlichkeit des Ereignisses A unter der Bedingung, dass das Ereignis B eingetreten ist.  
+
+$$p(A|B) = \frac{p(A \cap B)}{P(B)}$$
+
+* Das Zeichen $\cap$ ist das mathematische Symbol für UND (Schnittmenge von A und B).  
+* Das *Theorem von Bayes* gibt an, wie man eine bedingte Wahrscheinlichkeit $p(A|B)$ aus der umgekehrten bedingten Wahrscheinlichkeit $p(B|A)$ berechnen kann.   
+
+$$p(A|B)= \frac{p(A) \times p(B|A)}{p(B)}$$
+
+## Unabhängigkeit
+
+* Zwei Ereignisse $A$ und $B$ sind unabhängig, wenn das Eintreffen oder Nicht-Eintreffen des Ereignisses $B$ die Wahrscheinlichkeit für ein Ereignis $A$ nicht verändert.  
+
+$$p(A) = p(A|B) ~, ~p(B) = p(B|A)$$
+
+<br/>
+<br/>
+<br/>
+
 # Normalverteilung
 
 $$X \sim N(\mu, \sigma)$$
@@ -251,6 +291,72 @@ qqline(x, col = "blue")
 <center>
 ![qq-plots Interpretation](./png/qq.png)
 </center>
+
+<br/>
+<br/>
+<br/>
+
+# Binomialverteilung   
+
+$$X \sim Bin(n, p)$$
+
+* $n$ = Anzahl Versuche    
+* $p$ = Eintrittswahrscheinlichkeit   
+
+## Erwartungswert (Mittelwert) der Binomialverteilung
+
+$$\mu = n \times p$$
+
+## Standardabweichung der Binomialverteilung   
+
+$$\sigma = \sqrt{np(1-p)}$$
+
+## Bedingungen für Binomialverteilung   
+
+* Die Versuche müssen unabhängig sein.   
+* Die Anzahl der Versuche muss bekannt sein.   
+* Jedes Versuchsergebnis ist entweder ein Erfolg oder ein Misserfolg.    
+* Die Wahrscheinlichkeit für einen Erfolg muss für jeden Versuch gleich sein.   
+
+## Wahrscheinlichkeiten der Binomialverteilung    
+
+* Wenn $p$ die Wahrscheinlichkeit für einen Erfolg ist, ist $1-p$ die Wahrscheinlichkeit für einen Misserfolg. $n$ gibt die Anzahl der Versuche an und $k$ die Anzahl der Erfolge.   
+
+$$p(k, n) =  {n \choose k}p^k(1-p)^{n-k}$$
+
+* Wahrscheinlichkeit für $k$ Erfolge in $n$ Versuchen mit der Erfolgswahrscheinlichkeit $p$ in `R` berechnen:
+
+```{r, echo=TRUE, eval=FALSE}
+dbinom(k, n, p)
+```
+
+* Anzahl Kombinationen von $k$ Erfolgen in $n$ Versuchen berechnen (Binomialkoeffizient)  
+
+$${n \choose k} = \frac{n!}{k!(n-k)!}$$
+
+```{r, echo=TRUE, eval=FALSE}
+choose(n, k)
+```
+
+## Normalapproximation   
+
+* Eine Binomialverteilung mit mindestens 10 erwarteten Erfolgen und mindestens 10 erwarteten Misserfolgen folgt annähernd einer Normalverteilung.   
+
+$$np \geq 10$$
+$$n(1-p) \geq 10$$   
+
+* Falls diese Bedingung erfüllt ist, gilt:
+
+$$Bin(n, p) \sim N(\mu, \sigma)$$
+
+* wobei
+
+$$\mu = np$$
+$$\sigma = \sqrt{np(1-p)}$$
+
+<br/>
+<br/>
+<br/>
 
 # Grundlagen der Inferenzstatstik
 
@@ -459,6 +565,10 @@ Bei einem Signifikanzniveau $\alpha = 0.05$ nehmen wir ein Risiko von 5% in Kauf
 * Enthält ein 95% Vertrauensintervall den Nullwert nicht, wird $H_0$ verworfen.  
 * Enthält ein 95% Vertrauensintervall den Nullwert, wird $H_0$ nicht verworfen.   
 
+<br/>
+<br/>
+<br/>
+
 # Inferenz für quantitative Daten  
 
 ## Hypothesentests für gepaarte Mittelwerte   
@@ -534,6 +644,10 @@ $$SE_{\bar{x}_1 - \bar{x}_2} = \sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}$$
 ### Konfidenzintervall für unabhängige Daten  
 
 $$CI^* = (\bar{x}_1 - \bar{x}_2) \pm z^* \times SE_{\bar{x}_1 - \bar{x}_2}$$
+
+<br/>
+<br/>
+<br/>
 
 # T-Verteilung und t-Tests   
 
@@ -709,6 +823,10 @@ t.test(x = x1, # Gruppe 1
        alternative = "two.sided")# zweiseitiger Test
 ```
 
+<br/>
+<br/>
+<br/>
+
 # Nichtparametrische Tests
 
 Nichtparametrische Tests kommen zur Anwendung, wenn die Annahme der Normalverteilung fraglich ist.
@@ -766,7 +884,328 @@ Y <- c(2, 3, 2, 5, 6, 2, 3, 8, 1, 2)
 wilcox.test(x = X, y = Y, alternative = "two.sided", paired = FALSE)
 ```
 
-# Inferenz für qualitative Daten
+<br/>
+<br/>
+<br/>
+
+# Varianzanalyse, ANOVA 
+
+* ANOVA steht für Varianzanalyse (engl. Analysis of Variance) und wird verwendet um die Mittelwerte von mehr als 2 Gruppen zu vergleichen.  
+
+## Hypothesen   
+
+* $H_0: \mu_1 = \mu_2 ... = \mu_n$   
+* $H_A: Die ~Mittelwerte ~sind ~nicht ~alle ~gleich$$ 
+
+## Quadratsummenzerlegung  
+
+* Bei der Varianzanalyse wird die "Gesamtvarianz" der abhängigen Variablen $y$ in die Varianz zwischen den Gruppenmittelwerten und die Varianz zwischen den Messwerten innerhalb der Gruppen zerlegt.   
+
+$$SS_{total}=SS_{between} + SS_{within}$$
+
+* Die **Gesamtquadratsumme** $SS_{total}$ misst die totale Variabilität der abhängigen Variablen.  
+
+
+$$SS_{total} = \sum_{i=1}^n(y_i-\bar{y})^2$$
+
+   * $y_i:$ Wert der abhängigen Variablen für jede Beobachtung   
+   * $\bar{y}:$ Mittelwert der abhängigen Variablen (sog. *grand mean*)   
+
+* Die **Quadratsumme zwischen den Gruppen** misst die Variabilität zwischen den Gruppen; entspricht der Variabilität, die durch die Gruppierungsvariable erklärt wird (erklärte Variabilität).     
+
+$$SS_{between} = \sum_{j=1}^k n_j(\bar{y}_i-\bar{y})^2$$
+
+   * $n_j:$ Anzahl Beobachtungen in Gruppe $j$  
+   * $\bar{y}_j:$ Mittelwert der abhängigen Variablen in Gruppe $j$   
+   * $\bar{y}:$ Mittelwert der abhängigen Variablen (*grand mean*)   
+   
+* Die **Quadratsumme innerhalb der Gruppen** misst die Variabilität innerhalb der einzelnen Gruppen; entspricht der Variabilität, die nicht durch die Gruppierungsvariable beschrieben wird, also andere Gründe hat (unerklärte Variabilität) 
+
+$$SS_{within} = SS_{total}-SS_{between}$$
+
+* Freiheitsgrade für ANOVA
+
+   * Total: $df_{tota} = n-1$
+   * für SS_{between}: $df_{between} = k-1$   
+   * für SS_{within}: $df_{within} = df_{total}-df{between}$   
+   
+* Die **mittleren Quadratsummen** beschreiben die durchschnittliche Variabilität zwischen und innerhalb der Gruppen.   
+
+$$MSS_{between} = SS_{between}/df_{between}$$  
+
+$$MSS_{within} = SS_{within}/df_{within}$$  
+
+* Teststatistik $F$   
+
+$$F = \frac{MSS_{between}}{MSS_{within}}$$
+
+* $p$-Wert
+
+   * gibt die Wahrscheinlichkeit eine so grosse oder noch grössere Teststatistik $F$ unter der Annahme, dass die Mittelwerte aller Gruppen gleich gross sind.   
+   * ist die Fläche unter der Kurve der $F$-Verteilung mit den Freiheitsgraden $df_{between}$ und $df_{within}$ oberhalb des $F$-Werts.   
+   
+   * in `R` 
+   
+```{r, echo=TRUE, eval=FALSE}
+pf(F, df_between, df_within, lower.tail = FALSE)
+```
+   
+
+## Bedingungen für ANOVA   
+
+* Unabhängigkeit der Messungen   
+
+   * zwischen den Gruppen: Die Gruppen müssen voneinander unabhängig sein, andernfalls ist eine ANOVA für Messwiederholungen (repeated measures anova) durchzuführen.   
+   * innerhalb der Gruppen: Die Beobachtungseinheiten müssen unabhängig voneinander sein.   
+   
+* Normalverteilung: Die Daten innerhalb jeder Gruppe sollten annähernd normalverteilt sein.  
+* Die Gruppen sollten annähernd gleiche Varianzen haben.   
+
+## Post-Hoc paarweise Vergleiche   
+
+* Das Signifikanzniveau muss für die Anzahl der Vergleiche angepasst werden. Es existieren verschiedene Verfahren. Am einfachsten ist die **Bonferroni-Korrektur**. Vergleiche den $p$-Wert für jeden Test mit dem Signifikanzniveau $\alpha^*$.
+
+$$\alpha^* = \frac{\alpha}{K}$$
+
+$$K = Anzahl ~Vergleiche = \frac{k(k-1)}{2}$$
+
+* Standardfehler für mehrere paarweise Vergleiche  
+
+$$SE = \sqrt{\frac{MSS_{within}}{n_1}+\frac{MSS_{within}}{n_2}}$$
+
+* Teststatistik $t$   
+
+$$t = \frac{(\bar{x}_1 - \bar{x}_2) - (\mu_1-\mu_2)}{\sqrt{\frac{MSS_{within}}{n_1}+\frac{MSS_{within}}{n_2}}}$$
+
+```{r, echo=TRUE, eval=FALSE}
+# p-Wert für zweiseitigen t-Test
+2 * pt(t-Wert, df, lower.tail = FALSE)
+```
+
+Beispiel
+
+```{r, warning=FALSE, message=FALSE, echo=TRUE}
+library(dplyr)
+
+# create sample data -----------------------------------------------------------
+data <- tibble(
+  gruppe = c(rep("G1", 7), rep("G2", 7), rep("G3", 7)),
+  score = c(92, 93, 100, 104, 89, 91, 99, 71, 62, 85, 94, 78, 66, 71, 64, 73, 87, 91, 56, 78, 87)
+)
+
+# create anova summary table ---------------------------------------------------
+anova <- aov(score ~ gruppe, data = data)
+summary(anova)
+
+# post hoc analysis ------------------------------------------------------------
+pairwise.t.test(data$score, data$gruppe, 
+                p.adjust.method = "bonferroni", 
+                paired = FALSE,
+                alternative = "two.sided")
+
+# 95%-Konfidenzintervalle für Differenzen --------------------------------------
+TukeyHSD(anova)
+plot(TukeyHSD(anova))
+```
+
+<br/>
+<br/>
+<br/>
+
+# Inferenz für qualitative Daten  
+
+* $p:$ Populationsparameter   
+* $\hat{p}:$ Punktschätzer für den Populationsparameter (Anzahl Erfolge/Stichprobenumfang)  
+
+## Zentraler Grenzwertsatz für relative Häufigkeiten (engl. *proportions*) 
+
+* Relative Häufigkeiten von Stichproben sind annähernd normalverteilt mit ihrem Zentrum bei der Häufigkeit in der Population und einem Standardfehler, der umgekehrt proportional ist zum Stichprobenumfang.   
+
+$$\hat{p} \sim N \lgroup Mittelwert = p, SE = \sqrt{\frac{p(1-p)}{n}} \rgroup$$
+
+* Voraussetzungen   
+   * Unabhängigkeit: Die Beobachtungen müssen voneinander unabhängig sein   
+   * Stichprobenumfang: Es müssen mindestens 10 Erfolge und 10 Misserfolge vorliegen  
+   
+   $$n \times p \geq 10; ~n \times (1-p) \geq 10$$
+
+### Beispiel
+
+* Berechne die Wahrscheinlichkeit $P(\hat{p} > 0.95)$ für ein Ereignis mit der Erfolgswahrscheinlichkeit $p$ = 0.9 und einen Stichprobenumfang $n$ = 200. 
+
+1. Voraussetzungen prüfen
+
+```{r}
+p <- 0.9
+n <- 200
+
+n * p       # Anzahl Erfolge
+n * (1 - p) # Anzahl Misserfolge
+```
+
+2. Normalverteilungsapproximation   
+
+* Mittelwert und SE berechnen 
+
+$$\hat{p} \sim N \lgroup Mittelwert = 0.9, SE = \sqrt{\frac{0.9 \times 0.1}{200}} = 0.0212 \rgroup$$
+
+* $z$-Wert berechnen   
+
+$$z = \frac{0.95 - 0.9}{0.0212} = 2.36$$
+
+* $p$-Wert berechnen   
+
+$$P(Z > 2.36) \approx 0.0091$$
+
+* Unter Verwendung der Binomialverteilung   
+
+   * Die erwartete Wahrscheinlichkeit bei 200 Versuchen mit $p$ = 0.95 ist $\hat{p} = 200 \times 0.95 = 190$   
+   * Wie gross ist die Wahrscheinlichkeit für $p \geq 190$ bei 200 Stichproben und einer Wahrscheinlichkeit von $p$ = 0.9 in der Population unter der Nullhypothese?
+
+```{r, echo = TRUE}
+# Wahrscheinlichkeit für 190 oder mehr Erfolge
+
+sum(dbinom(190 : 200, size = 200, prob = .9))
+```
+
+
+## Konfidenzintervall für eine relative Häufigkeit  
+
+### Vorgehen   
+
+1. Voraussetzungen prüfen: Die Beobachtungen sind unabhängig, $\hat{p} n \geq 10$ und $(1-\hat{p})n \geq 10$ (Beachte: Wir verwenden hier den Schätzer für $p$!)   
+2. Wenn die Voraussetzungen erfüllt sind, ist für die Stichprobenverteilung von $\hat{p}$ näherungsweise das Normalverteilung gültig.   
+3. Standardfehler $SE$ mit $\hat{p}$ anstelle von $p$ berechnen mit der Formel   
+
+$$SE_{\hat{p}} = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
+
+4. Konfidenzintervall berechnen
+
+$$\hat{p} \pm z \times SE_{\hat{p}}$$
+
+* $z$ = 1.96 für ein 95%-Konfidenzintervall
+
+<br/>
+
+## Hypothesentest für eine Stichprobe   
+
+### Vorgehen
+
+1. Hypothesen formulieren:   
+
+  * $H_0: p = Nullwert$   
+  * $H_A: p < oder > oder \neq Nullwert$  
+  
+2. Punktschätzer $\hat{p}$ berechnen.   
+3. Voraussetzungen prüfen  
+
+  * Beobachtungen müssen unabhängig sein.  
+  * $np \geq 10$ und $n(p-1) \geq 10$ (hier $p$ aus der Nullhypothese einsetzen!)  
+  
+4. Teststatistik $z$ berechnen   
+
+$$z = \frac{\hat{p}-p}{SE} = \frac{\hat{p}-p}{\sqrt{\frac{p(1-p)}{n}}}$$
+
+5. Entscheide und interpretiere im Kontext der Forschungsfrage   
+
+   a) Verwerfe $H_0$, wenn $p \leq \alpha$; die Daten liefern Evidenz gegen $H_0$.   
+   b) Verwerfe $H_0$ nicht, wenn $p > \alpha$; die Daten liefern keine Evidenz gegen $H_0$.    
+
+   
+### $\hat{p}$ versus $p$   
+
+* Berechnung eines Konfidenzintervalls: $p$ ist unbekannt und wir setzen den besten Schätzer $\hat{p}$ ein.   
+
+$$n\hat{p} \geq 10; ~n(1-\hat{p}) \geq 10$$
+
+$$SE_{\hat{p}} = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
+
+* Hypothesentest: Wir testen gegen die Nullhypothese und setzen $p$ aus $H_0$ ein.
+
+$$np \geq 10; ~n(1-p) \geq 10$$
+
+$$SE = \sqrt{\frac{p(1-p)}{n}}$$
+
+### Beispiel
+
+* In einer Stichprobe von 100 Schüler:innen einer Schule sind 20 Raucher:innen.  
+
+$$n = 100, ~\hat{p} = 20/100 = 0.20$$
+
+* Konfidenzintervall berechnen   
+
+$$CI = \hat{p} \pm z \times SE$$
+
+$$CI = \hat{p} \pm z \times \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
+
+$$CI_{95} = 0.20 \pm 1.96 \times \sqrt{\frac{0.20 \times 0.80}{100}} $$
+
+$$CI_{95} = 0.20 \pm 1.96 \times 0.04 \approx [0.12, ~0.28]$$
+
+* *Interpretation: Wir können zu 95% darauf vertrauen, dass an dieser Schule zwischen 12% und 28% der Schüler:innen rauchen.*
+
+<br/>
+
+* Hypothesentest
+
+   * Frage: Unterscheidet sich der wahre Anteil an Schüler:innen, die an dieser Schule rauchen von 18%?
+   * $H_0: p = 18$   
+   * $H_A: p \neq 18$   
+   
+$$z = \frac{\hat{p}-p_0}{SE} = \frac{\hat{p}-p_0}{\sqrt(\frac{p_0(1-p_0)}{n})}$$
+
+$$z = \frac{0.20-0.18}{\sqrt{\frac{0.18(1-0.18)}{100}}} = \frac{0.02}{0.0384} = 0.52$$
+   
+```{r, echo=TRUE}
+2 * pnorm(0.52, lower.tail = FALSE)
+```
+   
+* *Interpretation: $p-Wert > \alpha$, wir haben keine Evidenz gegen die $H_0$, die besagt, dass der wahre Anteil an Raucher:innen 18% beträgt. Das Ergebnis des Hypothesentests stimmt mit dem berechneten Konfidenzintervall von [0.12, 0.28] überein, das den Wert 0.18 enthält.*      
+<br/>
+
+## Vergleich von zwei relativen Häufigkeiten
+
+* Anwendung des zentralen Grenzwertsatzes   
+
+$$(\hat{p}_1-\hat{p}_2) \sim N \lgroup Mittelwert = (p_1-p_2), SE = \sqrt{\frac{p_1(1-p_1)}{n_1}+\frac{p_2(1-p_2)}{n_2}} \rgroup$$
+
+* Wir vergleichen die Zahlen der Schule mit einer zweiten Schule: Dort wurde eine Zufallsstichprobe von 120 Schüler:innen erhoben, wovon 30 Raucher:innen waren.   
+
+$$n_1 = 100, \hat{p}_1 = 20/100 = 0.20$$
+
+$$n_2 = 120, \hat{p}_2 = 30/120 = 0.25$$
+
+$$CI = (\hat{p}_1 - \hat{p}_2) \pm z \times \sqrt{\frac{\hat{p}_1(1-\hat{p}_1)}{n_1}+\frac{\hat{p}_2(1-\hat{p}_2)}{n_2}}$$
+
+$$CI = (0.20-0.25) \pm z \times \sqrt{\frac{0.20 \times 0.80}{100}+\frac{0.25 \times 0.75}{120}}$$
+
+$$CI_{95} = -0.05 \pm 1.96 \times 0.0562 \approx [-0.16, ~0.06]$$
+
+* *Interpretation: Wir können zu 95% darauf vertrauen, dass der wahre Anteil an Raucher:innen in Schule 1 um -16% tiefer bis 6% höher ist als an Schule 2.*   
+
+<br/>
+
+* Hypothesentest   
+
+   * Frage: Unterscheiden sich die Anteile an Raucher:innen zwischen den beiden Schulen?  
+   * $H_0: p_1 = p_2$  
+   * $H_A: p_1 \neq p_2$   
+   
+$$z = \frac{(\hat{p}_1-\hat{p}_2)-(p_1-p_2)}{\sqrt{\frac{\hat{p}_{pool}(1-\hat{p}_{pool})}{n_1} + \frac{\hat{p}_{pool}(1-\hat{p}_{pool})}{n_2}}}$$
+
+$$\hat{p}_{pool} = \frac{Anzahl ~Erfolge}{Anzahl ~Fälle} = \frac{20+30}{100+120} \approx 0.23$$
+
+$$z = \frac{(0.20-0.25)-0}{\sqrt{\frac{0.23 \times 0.77}{100} + \frac{0.23 \times 0.77}{120}}} = \frac{-0.05}{0.057} = -0.88$$
+
+```{r, echo=TRUE}
+2 * pnorm(0.88, lower.tail = FALSE)
+```
+
+* *Interpretation: $p-Wert > \alpha$; wir haben keine Evidenz gegen die $H_0$, die besagt, dass es keinen Unterschied zwischen den beiden Schulen bezüglich der Anteile an Raucher:innen gibt. Das 95%-Konfidenzintervall unterstützt dieses Ergebnis, da es Null enthält.*
+
+<br/>
+<br/>
+<br/>
 
 ## Chi-Quadrat-Test
 
@@ -809,7 +1248,6 @@ Funktion in `R`
 chisq.test()
 ```
 
-
 Beispiel: Untersucht wurde bei 100 Schüler:innen, ob sie Tictoc verwenden.
 
 ```{r}
@@ -832,6 +1270,9 @@ chisq$observed
 # erwartete Werte anzeigen
 chisq$expected
 ```
+<br/>
+<br/>
+<br/>
 
 # Korrelation  
 
@@ -883,6 +1324,9 @@ cor.test(x, y)
 cor.test
 ```
 
+<br/>
+<br/>
+<br/>
 
 # Einfache lineare Regression   
 
